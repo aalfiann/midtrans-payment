@@ -1,4 +1,3 @@
-var assert = require('assert');
 var MidTrans = require('../src/midtrans.js');
 
 var config = {

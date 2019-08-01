@@ -25,7 +25,7 @@ var config = {
 
 ### Example to create Transactions via SNAP
 ```javascript
-var mdt = MidTrans(config);
+var mdt = new MidTrans(config);
 mdt.type('snap').action('transactions')
     .transaction_details('INV001',2000)
     .item_details('Midtrans Bear',1000,1,'Kid Toys')                //optional
@@ -41,7 +41,7 @@ mdt.type('snap').action('transactions')
 ### Example to create API Charge Bank Transfer with Bank Permata
 ```javascript
 
-var mdt = MidTrans(config);
+var mdt = new MidTrans(config);
 mdt.type('api').action('charge')
     .transaction_details('INV002',2000)
     .item_details('Midtrans Bear',1000,1,'Kid Toys')                //optional
@@ -79,7 +79,7 @@ mdt.type('api').action('token',payload)
 
 ### Example to create API Charge Credit Card
 ```javascript
-var mdt = MidTrans(config);
+var mdt = new MidTrans(config);
 mdt.type('api').action('charge')
     .transaction_details('INV003',2000)
     .item_details('Midtrans Bear',1000,1,'Kid Toys')                //optional
