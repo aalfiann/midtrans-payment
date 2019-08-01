@@ -1,0 +1,33 @@
+{
+  "name": "midtrans-payment",
+  "version": "1.0.0",
+  "description": "Midtrans Payment Gateway library for NodeJS",
+  "main": "src/midtrans.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aalfiann/midtrans-payment.git"
+  },
+  "keywords": [
+    "midtrans",
+    "payment",
+    "payment-gateway"
+  ],
+  "author": "M ABD AZIZ ALFIAN",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aalfiann/midtrans-payment/issues"
+  },
+  "homepage": "https://github.com/aalfiann/midtrans-payment",
+  "dependencies": {
+    "unirest": "^0.6.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.0"
+  }
+}
