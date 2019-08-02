@@ -1,6 +1,6 @@
 {
   "name": "midtrans-payment",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Midtrans Payment Gateway library for NodeJS",
   "main": "src/midtrans.js",
   "directories": {

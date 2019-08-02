@@ -35,4 +35,76 @@ describe('MidTrans endpoint url test', function(){
         assert.equal(mdt.url,'https://app.sandbox.midtrans.com/snap/v1/transactions');
     });
 
+    it('endpoint url status/b2b', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('status/b2b','123',{page:0,per_page:10});
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/123/status/b2b?page=0&per_page=10');
+    });
+
+    it('endpoint url card/register', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('card/register');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/card/register');
+    });
+
+    it('endpoint url capture', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('capture');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/capture');
+    });
+
+    it('endpoint url approve', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('approve','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/123/approve');
+    });
+
+    it('endpoint url deny', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('deny','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/123/deny');
+    });
+
+    it('endpoint url cancel', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('cancel','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/123/cancel');
+    });
+
+    it('endpoint url expire', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('expire','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/123/expire');
+    });
+
+    it('endpoint url refund', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('refund','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/123/refund');
+    });
+
+    it('endpoint url refund online direct', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('refund/online/direct');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/refund/online/direct');
+    });
+
+    it('endpoint url point_inquiry', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('point_inquiry','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/point_inquiry/123');
+    });
+
+    it('endpoint url point_inquiry with special case', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('point_inquiry','123',{'gross_amount':1000});
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/point_inquiry/123?gross_amount=1000');
+    });
+
+    it('endpoint url bins', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('bins','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/bins/123');
+    });
+
 });

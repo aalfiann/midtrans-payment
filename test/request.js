@@ -21,10 +21,29 @@ describe('MidTrans request test', function(){
         });
     });
 
-    it('action: token', function(done){
+    it('action: token with secure true will thrown error with wrong data information', function(done){
         var mdt = new MidTrans(config);
         var payload = {
+            card_number:'4811 1111 1111 1114',
+            card_exp_month:12,
+            card_exp_year:2019,
+            card_cvv:123,
             gross_amount:10000,
+            secure:true
+        };
+        var body = mdt.type('api').action('token',payload);
+        body.send(function(response) {
+            if(response.statusCode == 200 && response.body.status_code >= 400){
+                done();
+            } else {
+                done(new Error(JSON.stringify(response.body)));
+            }
+        });
+    });
+
+    it('action: token with secure false is succesfully even with wrong data information', function(done){
+        var mdt = new MidTrans(config);
+        var payload = {
             card_number:'4811 1111 1111 1114',
             card_exp_month:12,
             card_exp_year:2019,
@@ -32,7 +51,7 @@ describe('MidTrans request test', function(){
         };
         var body = mdt.type('api').action('token',payload);
         body.send(function(response) {
-            if(response.statusCode == 200){
+            if(response.statusCode == 200 && response.body.status_code < 400){
                 done();
             } else {
                 done(new Error(JSON.stringify(response.body)));
@@ -52,18 +71,6 @@ describe('MidTrans request test', function(){
         });
     });
 
-    it('action status: found order_id should return http status 200 and body.status_code != 404', function(done){
-        var mdt = new MidTrans(config);
-        var body = mdt.type('api').action('status','ORDER-101');
-        body.send(function(response) {
-            if(response.statusCode == 200 && response.body.status_code != '404'){
-                done();
-            } else {
-                done(new Error(JSON.stringify(response.body)));
-            }
-        });
-    });
-
     it('action status: not found order_id via SNAP should return http status 200 and body.status_code 404', function(done){
         var mdt = new MidTrans(config);
         var body = mdt.type('snap').action('status','INV001');
@@ -76,11 +83,35 @@ describe('MidTrans request test', function(){
         });
     });
 
-    it('action status: not found order_id via API should return http status 200 and body.status_code 404', function(done){
+    it('action status/b2b: not found order_id should return http status 200 and body.status_code == 404', function(done){
         var mdt = new MidTrans(config);
-        var body = mdt.type('api').action('status','INV001');
+        var body = mdt.type('api').action('status/b2b','your-order-id',{page:0,per_page:10});
         body.send(function(response) {
             if(response.statusCode == 200 && response.body.status_code == '404'){
+                done();
+            } else {
+                done(new Error(JSON.stringify(response.body)));
+            }
+        });
+    });
+
+    it('action bins: this will get data of credit/debit card or the card brand like visa/master', function(done){
+        var mdt = new MidTrans(config);
+        var body = mdt.type('api').action('bins','455633');
+        body.send(function(response) {
+            if(response.statusCode == 200){
+                done();
+            } else {
+                done(new Error(JSON.stringify(response.body)));
+            }
+        });
+    });
+
+    it('action bins: this will get data of credit/debit card or the card brand like visa/master', function(done){
+        var mdt = new MidTrans(config);
+        var body = mdt.type('api').action('bins','455633');
+        body.send(function(response) {
+            if(response.statusCode == 200){
                 done();
             } else {
                 done(new Error(JSON.stringify(response.body)));

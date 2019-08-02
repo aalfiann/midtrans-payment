@@ -191,26 +191,48 @@ class MidTrans extends Base64 {
 
     /**
      * Set action for MidTrans Payment
-     * @param {string} name         you can set transactions|charge|approve|deny|cancel|expire|refund|status
-     * @param {string} order_id     [optional] this is not required for transactions and charge action 
+     * @param {string} name                 you can set transactions|charge|approve|deny|cancel|expire|refund|status
+     * @param {string|object} data          [optional] if string then will be order_id and if object then will be converted to parameter  
+     * @param {object} additional_payload   [conditional] sometimes we want to add url parameter in special case. 
      * @return {this}
      */
-    action(name,order_id='') {
+    action(name,data='',additional_payload='') {
         if(typeof name === 'string' || name instanceof String){
             name = name.toLowerCase();
-            if(name == 'token'){
-                if(typeof order_id === 'object'){
-                    var data = order_id;
-                    data.client_key = this.client_key;
-                    order_id = this[_convertObjectToURLParameter](data);
-                }
-                this.url = this[_url](this.mode)+'/'+name+'?'+order_id;
-            } else {
-                if(order_id){
-                    this.url = this[_url](this.mode)+'/'+order_id+'/'+name;
-                } else {
-                    this.url = this[_url](this.mode,this.type)+'/'+name;
-                }
+            switch(name) {
+                case 'token':
+                    if(typeof data === 'object'){
+                        var order_id = data;
+                        order_id.client_key = this.client_key;
+                        data = this[_convertObjectToURLParameter](order_id);
+                    }
+                    this.url = this[_url](this.mode)+'/'+name+'?'+data;
+                    break;
+                case 'point_inquiry':
+                    if(typeof additional_payload === 'object'){
+                        var param = this[_convertObjectToURLParameter](additional_payload);
+                        this.url = this[_url](this.mode)+'/'+name+'/'+data+'?'+param;
+                    } else {
+                        this.url = this[_url](this.mode)+'/'+name+'/'+data;
+                    }
+                    break;
+                case 'status/b2b':
+                    if(typeof additional_payload === 'object'){
+                        var param = this[_convertObjectToURLParameter](additional_payload);
+                        this.url = this[_url](this.mode)+'/'+data+'/'+name+'?'+param;
+                    } else {
+                        this.url = this[_url](this.mode)+'/'+data+'/'+name;
+                    }
+                    break;
+                case 'bins':
+                    this.url = (this[_url](this.mode)+'/'+name+'/'+data).replace('/v2/','/v1/');
+                    break;
+                default:
+                    if(data){
+                        this.url = this[_url](this.mode)+'/'+data+'/'+name;
+                    } else {
+                        this.url = this[_url](this.mode,this.type)+'/'+name;
+                    }   
             }
         }
         return this;
@@ -352,7 +374,12 @@ class MidTrans extends Base64 {
      * @return {callback}
      */
     send(callback){
-        if(this.url.endsWith('/status') || this.url.endsWith(this.client_key)){
+        if(this.url.endsWith(this.client_key) 
+            || (this.url.includes('/status') > 0)
+            || (this.url.includes('/point_inquiry/') > 0)
+            || (this.url.includes('/bins/') > 0)
+            || (this.url.includes('/card/register') > 0)
+        ){
             var req = unirest.get(this.url);
         } else {
             var req = unirest.post(this.url);
