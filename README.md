@@ -23,7 +23,8 @@ var config = {
 };
 ```
 
-### Example to create Transactions via SNAP
+### SNAP
+#### Example to create Transactions
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('snap').action('transactions')
@@ -38,7 +39,8 @@ mdt.type('snap').action('transactions')
     });
 ```
 
-### Example to create API Charge Bank Transfer with Bank Permata
+### API
+#### Example to create API Charge Bank Transfer with Bank Permata
 ```javascript
 
 var mdt = new MidTrans(config);
@@ -59,7 +61,7 @@ mdt.type('api').action('charge')
     });
 ```
 
-### Example Get Credit Card Token
+#### Example Get Credit Card Token
 ```javascript
 var mdt = new MidTrans(config);
 
@@ -77,7 +79,7 @@ mdt.type('api').action('token',payload)
     });
 ```
 
-### Example to create API Charge Credit Card
+#### Example to create API Charge Credit Card
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api').action('charge')
@@ -96,17 +98,37 @@ mdt.type('api').action('charge')
     });
 ```
 
-### Example to get Transaction Status
+#### Example to get Transaction Status
 ```javascript
 var mdt = new MidTrans(config);
-mdt.type('snap')    //you can set type with snap or api
+mdt.type('api')    //you can set type with snap or api
     .action('status','INV001')
     .send(function(response) {
         console.log(response.body);
     });
 ```
 
-### Example to APPROVE Transaction
+#### Example to get Transaction Status B2B
+```javascript
+var mdt = new MidTrans(config);
+mdt.type('api')    //you can set type with snap or api
+    .action('status/b2b','INV001')
+    .send(function(response) {
+        console.log(response.body);
+    });
+```
+
+#### Example to get Transaction Status B2B with pagination
+```javascript
+var mdt = new MidTrans(config);
+mdt.type('api')    //you can set type with snap or api
+    .action('status/b2b','INV001',{page:0,per_page:10})
+    .send(function(response) {
+        console.log(response.body);
+    });
+```
+
+#### Example to APPROVE Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
@@ -116,7 +138,7 @@ mdt.type('api')    //you can set type with snap or api
     });
 ```
 
-### Example to DENY Transaction
+#### Example to DENY Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
@@ -126,7 +148,7 @@ mdt.type('api')    //you can set type with snap or api
     });
 ```
 
-### Example to CANCEL Transaction
+#### Example to CANCEL Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
@@ -136,7 +158,7 @@ mdt.type('api')    //you can set type with snap or api
     });
 ```
 
-### Example to EXPIRE Transaction
+#### Example to EXPIRE Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
@@ -146,7 +168,7 @@ mdt.type('api')    //you can set type with snap or api
     });
 ```
 
-### Example to REFUND Transaction
+#### Example to REFUND Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
@@ -156,7 +178,7 @@ mdt.type('api')    //you can set type with snap or api
     });
 ```
 
-### Example create body request manually
+#### Example create body request manually
 If our methods doesn't fit in your situation. You're able to build your custom body request.
 
 ```javascript
@@ -205,6 +227,75 @@ mdt.type('api').action('charge')
     });
 ```
 
+### RECURRING API
+#### Example to Create Subscriptions
+```javascript
+var mdt = new MidTrans(config);
+    mdt.type('api')
+        .action('subscriptions')
+        .subscriptions('SUB1',1000,'IDR','credit_card','yourtoken',1)
+        .send(function(response){
+            console.log(response.body);
+        });
+```
+
+#### Example to Find Subscriptions
+```javascript
+var mdt = new MidTrans(config);
+    mdt.type('api')
+        .action('subscriptions','123')
+        .send(function(response){
+            console.log(response.body);
+        });
+```
+
+#### Example to Enable Subscriptions
+```javascript
+var mdt = new MidTrans(config);
+    mdt.type('api')
+        .do('enable').action('subscriptions','123')
+        .send(function(response){
+            console.log(response.body);
+        });
+```
+
+#### Example to Disable Subscriptions
+```javascript
+var mdt = new MidTrans(config);
+    mdt.type('api')
+        .do('disable').action('subscriptions','123')
+        .send(function(response){
+            console.log(response.body);
+        });
+```
+
+#### Example to Update Subscriptions
+```javascript
+var mdt = new MidTrans(config);
+    mdt.type('api')
+        .do('update').action('subscriptions','123')
+        .subscriptions('SUB1',2000,'IDR','credit_card','yourtoken',1)
+        .send(function(response){
+            console.log(response.body);
+        });
+```
+
+#### Example create body request for subscriptions manually
+```javascript
+var mdt = new MidTrans(config);
+    mdt.type('api')
+        .do('update').action('subscriptions')
+        .add('name','SUB1');
+        .add('amount','2000');
+        .add('currency','IDR');
+        .add('payment_type','credit_card');
+        .add('token','yourtoken');
+        .add('interval',1);
+        .send(function(response){
+            console.log(response.body);
+        });
+```
+
 ### Response
 We use [unirest](http://unirest.io/nodejs.html) library for handling call API to MidTrans.
 
@@ -214,6 +305,29 @@ If you want to know all available methods in this MidTrans Payment library
 var mdt = new MidTrans(config);
 console.log(mdt.showAllMethods(mdt));
 ```
+
+#### Main methods
+- `type(name)`                                  this is to set SNAP or API  
+- `do(name)`                                    this is to set update|enable|disable for subscriptions only  
+- `action(name,data='',additional_payload='')`  this to set action API feature. Ex: charge|approve|deny|cancel|expiry|point_inquiry|bins|status|status/b2b|refund|refund/online/direct  
+- `add(name,data)`                              this is to add new key for body request object  
+- `send(callback)`                              this is to send request to MidTrans endpoint API  
+
+#### Shortcut methods
+We provide a shortcut methods for you to make easier create common body request
+- `subscriptions(name,amount,currency,payment_type,token,interval)`  
+- `transaction_details(order_id,amount)`  
+- `item_details(name,price,quantity,brand='',category='',merchant_name='',tenor='',code_plan='',mid='')`  
+- `customer_details(first_name='',last_name='',email='',phone='')`  
+- `billing_address(first_name='',last_name='',email='',phone='',address='',city='',postal_code='',country_code='')`
+- `shipping_address(first_name='',last_name='',email='',phone='',address='',city='',postal_code='',country_code='')`
+
+#### Helper methods  
+- `remove(name)`      this will delete the key in body request object  
+- `clean()`           this will cleanup the body request object  
+- `encode(data)`      this will encode {string|any) to base64 string  
+- `decode(data)`      this will decode base64 string to original string  
+
 
 ### Additional Feature
 For all additional feature like create `custom_field`, `custom_expiry`, `enabled_payments`, etc.  
@@ -239,9 +353,6 @@ But you can still use additional feature with this way:
     unit: "minute"
 })
 ```
-
-### Known Limitation
-This library still not support yet for **RECURRING API**
 
 ### Unit Test
 If you want to play arround with testing
