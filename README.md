@@ -1,4 +1,9 @@
 # midtrans-payment
+[![NPM](https://nodei.co/npm/midtrans-payment.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/midtrans-payment/)  
+  
+[![npm version](https://img.shields.io/npm/v/midtrans-payment.svg?style=flat-square)](https://www.npmjs.org/package/midtrans-payment)
+![NPM download/month](https://img.shields.io/npm/dm/midtrans-payment.svg)
+![NPM download total](https://img.shields.io/npm/dt/midtrans-payment.svg)  
 Midtrans Payment Gateway library for NodeJS
 
 ### Install
@@ -42,7 +47,6 @@ mdt.type('snap').action('transactions')
 ### API
 #### Example to create API Charge Bank Transfer with Bank Permata
 ```javascript
-
 var mdt = new MidTrans(config);
 mdt.type('api').action('charge')
     .transaction_details('INV002',2000)
@@ -173,6 +177,63 @@ mdt.type('api')    //you can set type with snap or api
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
     .action('refund','INV001')
+    .send(function(response) {
+        console.log(response.body);
+    });
+```
+
+#### Example to REFUND DIRECT Transaction
+```javascript
+var mdt = new MidTrans(config);
+mdt.type('api')    //you can set type with snap or api
+    .action('refund/online/direct','INV001')
+    .send(function(response) {
+        console.log(response.body);
+    });
+```
+
+#### Example to Capture Transactions
+```javascript
+var mdt = new MidTrans(config);
+mdt.type('api').action('capture')
+    .add('transaction_id','be4f3e44-d6ee-4355-8c64-c1d1dc7f4590')
+    .add('gross_amount',145000)
+    .send(function(response) {
+        console.log(response.body);
+    });
+```
+
+#### Example to Card Register
+```javascript
+var mdt = new MidTrans(config);
+
+var payload = {
+    card_number:'4811222233331114',
+    card_exp_month:12,
+    card_exp_year:2019,
+    card_cvv:123
+};
+
+mdt.type('api')    //you can set type with snap or api
+    .action('card/register',payload)
+    .send(function(response) {
+        console.log(response.body);
+    });
+```
+
+#### Example to Point Inquiry
+```javascript
+var mdt = new MidTrans(config);
+mdt.type('api').action('point_inquiry','123',{gross_amount:1000})
+    .send(function(response) {
+        console.log(response.body);
+    });
+```
+
+#### Example to BIN API
+```javascript
+var mdt = new MidTrans(config);
+mdt.type('api').action('bins','455633')
     .send(function(response) {
         console.log(response.body);
     });
