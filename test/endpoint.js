@@ -121,26 +121,26 @@ describe('MidTrans endpoint url test', function(){
 
     it('endpoint url subscriptions find', function(){
         var mdt = new MidTrans(config);
-        mdt.action('subscriptions','123');
-        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/123');
+        mdt.action('subscriptions','SUB1');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/SUB1');
     });
 
     it('endpoint url subscriptions enable', function(){
         var mdt = new MidTrans(config);
-        mdt.do('enable').action('subscriptions','123');
-        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/123/enable');
+        mdt.do('enable').action('subscriptions','SUB1');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/SUB1/enable');
     });
 
     it('endpoint url subscriptions disable', function(){
         var mdt = new MidTrans(config);
-        mdt.do('disable').action('subscriptions','123');
-        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/123/disable');
+        mdt.do('disable').action('subscriptions','SUB1');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/SUB1/disable');
     });
 
     it('endpoint url subscriptions update', function(){
         var mdt = new MidTrans(config);
-        mdt.do('update').action('subscriptions','123');
-        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/123');
+        mdt.do('update').action('subscriptions','SUB1');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/SUB1');
     });
 
 });

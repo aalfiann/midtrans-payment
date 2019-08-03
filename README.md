@@ -304,7 +304,7 @@ var mdt = new MidTrans(config);
 ```javascript
 var mdt = new MidTrans(config);
     mdt.type('api')
-        .action('subscriptions','123')
+        .action('subscriptions','SUB1')
         .send(function(response){
             console.log(response.body);
         });
@@ -314,7 +314,7 @@ var mdt = new MidTrans(config);
 ```javascript
 var mdt = new MidTrans(config);
     mdt.type('api')
-        .do('enable').action('subscriptions','123')
+        .do('enable').action('subscriptions','SUB1')
         .send(function(response){
             console.log(response.body);
         });
@@ -324,7 +324,7 @@ var mdt = new MidTrans(config);
 ```javascript
 var mdt = new MidTrans(config);
     mdt.type('api')
-        .do('disable').action('subscriptions','123')
+        .do('disable').action('subscriptions','SUB1')
         .send(function(response){
             console.log(response.body);
         });
@@ -334,7 +334,7 @@ var mdt = new MidTrans(config);
 ```javascript
 var mdt = new MidTrans(config);
     mdt.type('api')
-        .do('update').action('subscriptions','123')
+        .do('update').action('subscriptions','SUB1')
         .subscriptions('SUB1',2000,'IDR','credit_card','yourtoken',1)
         .send(function(response){
             console.log(response.body);
