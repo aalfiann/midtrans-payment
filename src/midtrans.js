@@ -5,7 +5,7 @@
 'use strict';
 const unirest = require('unirest');
 const Base64 = require('./base64.js');
-const _isEmptyObject = Symbol('_isEmptyObject');
+const _isEmpty = Symbol('_isEmpty');
 const _isEmptyConfig = Symbol('_isEmptyConfig');
 const _authorization = Symbol('_authorization');
 const _autoItemNumbered = Symbol('_autoItemNumbered');
@@ -41,11 +41,11 @@ class MidTrans extends Base64 {
     }
 
     /**
-     * Determine object is empty
-     * @param {object} obj
+     * Determine variable is empty
+     * @param {var} obj
      * @return {bool} 
      */
-    [_isEmptyObject](obj) {
+    [_isEmpty](obj) {
         if(obj === undefined || obj === null || obj === '') return true;
         return false;
     }
@@ -56,7 +56,7 @@ class MidTrans extends Base64 {
      * @return {bool} 
      */
     [_isEmptyConfig](name) {
-        return this[_isEmptyObject](this[name]);
+        return this[_isEmpty](this[name]);
     }
 
     /**
@@ -216,6 +216,14 @@ class MidTrans extends Base64 {
                         this.url = this[_url](this.mode)+'/'+name+'/'+data;
                     }
                     break;
+                case 'card/register':
+                    if(typeof data === 'object'){
+                        var order_id = data;
+                        order_id.client_key = this.client_key;
+                        data = this[_convertObjectToURLParameter](order_id);
+                    }
+                    this.url = this[_url](this.mode)+'/'+name+'?'+data;
+                    break;
                 case 'status/b2b':
                     if(typeof additional_payload === 'object'){
                         var param = this[_convertObjectToURLParameter](additional_payload);
@@ -227,6 +235,22 @@ class MidTrans extends Base64 {
                 case 'bins':
                     this.url = (this[_url](this.mode)+'/'+name+'/'+data).replace('/v2/','/v1/');
                     break;
+                case 'subscriptions':
+                    if(data) {
+                        switch(this.do){
+                            case 'enable':
+                                this.url = (this[_url](this.mode)+'/'+name+'/'+data+'/enable').replace('/v2/','/v1/');
+                                break;
+                            case 'disable':
+                                this.url = (this[_url](this.mode)+'/'+name+'/'+data+'/disable').replace('/v2/','/v1/');
+                                break;
+                            default:
+                                this.url = (this[_url](this.mode)+'/'+name+'/'+data).replace('/v2/','/v1/');
+                        }
+                    } else {
+                        this.url = (this[_url](this.mode)+'/'+name).replace('/v2/','/v1/');
+                    }
+                    break;
                 default:
                     if(data){
                         this.url = this[_url](this.mode)+'/'+data+'/'+name;
@@ -235,6 +259,45 @@ class MidTrans extends Base64 {
                     }   
             }
         }
+        return this;
+    }
+
+    /**
+     * Cleanup body request
+     * @return {this}
+     */
+    clean() {
+        this.body = {};
+        return this;
+    }
+
+    /**
+     * Do special action for some case. ex: subscriptions
+     * @return {this}
+     */
+    do(name) {
+        this.do = name.toString().toLowerCase();
+        return this;
+    }
+
+    /**
+     * Set data subscriptions
+     * @param {string} name             Subscription's name that will be use to generate transaction's order id. 
+     *                                  Note: Allowed symbols are dash(-), underscore(_), tilde (~), and dot (.)
+     * @param {int|string} amount       Amount that will be use to make recurring charge. Note: Do not use decimal 
+     * @param {string} currency         ISO-4217 representation for 3 digit alphabetic currency code. 
+     *                                  Note: Currently only support IDR
+     * @param {string} payment_type     Transaction payment method. Note: currently only support credit_card
+     * @param {string} token            Saved payment token. Note: For credit_card should use saved_token_id received in charge response
+     * @param {int|string} interval     Monthly interval of the subscription. Note: only allowed 1-12 value
+     */
+    subscriptions(name,amount,currency,payment_type,token,interval) {
+        this.add('name',name);
+        this.add('amount',amount.toString());
+        this.add('currency',currency.toString().toUpperCase());
+        this.add('payment_type',payment_type);
+        this.add('token',token.toString());
+        this.add('interval',parseInt(interval));
         return this;
     }
 
@@ -315,7 +378,7 @@ class MidTrans extends Base64 {
      * @return {this}
      */
     billing_address(first_name='',last_name='',email='',phone='',address='',city='',postal_code='',country_code='') {
-        if(!this[_isEmptyObject](this.body.customer_details)) {
+        if(!this[_isEmpty](this.body.customer_details)) {
             if(!this[_hasKey](this.body.customer_details,'billing_address')) this.add('billing_address',{});
             var items = {};
             if(first_name) items.first_name=first_name;
@@ -344,7 +407,7 @@ class MidTrans extends Base64 {
      * @return {this}
      */
     shipping_address(first_name='',last_name='',email='',phone='',address='',city='',postal_code='',country_code='') {
-        if(!this[_isEmptyObject](this.body.customer_details)) {
+        if(!this[_isEmpty](this.body.customer_details)) {
             if(!this[_hasKey](this.body.customer_details,'shipping_address')) this.add('shipping_address',{});
             var items = {};
             if(first_name) items.first_name=first_name;
@@ -379,8 +442,11 @@ class MidTrans extends Base64 {
             || (this.url.includes('/point_inquiry/') > 0)
             || (this.url.includes('/bins/') > 0)
             || (this.url.includes('/card/register') > 0)
+            || ((this.url.includes('/subscriptions/') > 0) && (this[_isEmpty](this.do) == true))
         ){
             var req = unirest.get(this.url);
+        } else if (this.url.includes('/subscriptions/') > 0 && (this.do == 'update')) {
+            var req = unirest.patch(this.url);
         } else {
             var req = unirest.post(this.url);
         }

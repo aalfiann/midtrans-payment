@@ -43,8 +43,14 @@ describe('MidTrans endpoint url test', function(){
 
     it('endpoint url card/register', function(){
         var mdt = new MidTrans(config);
-        mdt.action('card/register');
-        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/card/register');
+        var payload = {
+            card_number:'4811222233331114',
+            card_exp_month:12,
+            card_exp_year:2019,
+            card_cvv:123
+        }
+        mdt.action('card/register',payload);
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/card/register?card_number=4811222233331114&card_exp_month=12&card_exp_year=2019&card_cvv=123&client_key=xxx');
     });
 
     it('endpoint url capture', function(){
@@ -105,6 +111,36 @@ describe('MidTrans endpoint url test', function(){
         var mdt = new MidTrans(config);
         mdt.action('bins','123');
         assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/bins/123');
+    });
+
+    it('endpoint url subscriptions create', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('subscriptions');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions');
+    });
+
+    it('endpoint url subscriptions find', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('subscriptions','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/123');
+    });
+
+    it('endpoint url subscriptions enable', function(){
+        var mdt = new MidTrans(config);
+        mdt.do('enable').action('subscriptions','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/123/enable');
+    });
+
+    it('endpoint url subscriptions disable', function(){
+        var mdt = new MidTrans(config);
+        mdt.do('disable').action('subscriptions','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/123/disable');
+    });
+
+    it('endpoint url subscriptions update', function(){
+        var mdt = new MidTrans(config);
+        mdt.do('update').action('subscriptions','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/123');
     });
 
 });

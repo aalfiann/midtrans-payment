@@ -7,6 +7,14 @@ var config = {
     mode: ""
 };
 
+function isEmptyObject(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 describe('MidTrans body test', function(){
 
     it('transaction_details', function(){
@@ -124,6 +132,28 @@ describe('MidTrans body test', function(){
             .shipping_address('John','Doe','john.doe@gmail.com','+62856')
             .getBody();
         assert.equal(body.customer_details,undefined);
+    });
+
+    it('subscriptions data', function(){
+        var mdt = new MidTrans(config);
+        var body = mdt.type('api').action('subscriptions')
+            .subscriptions('SUB1',1000,'IDR','credit_card','yourtoken',1)
+            .getBody();
+        assert.equal(body.name,'SUB1');
+        assert.equal(body.amount,1000);
+        assert.equal(body.currency,'IDR');
+        assert.equal(body.payment_type,'credit_card');
+        assert.equal(body.token,'yourtoken');
+        assert.equal(body.interval,1);
+    });
+
+    it('cleanup body request data', function(){
+        var mdt = new MidTrans(config);
+        var body = mdt.type('api').action('subscriptions')
+            .subscriptions('SUB1',1000,'IDR','credit_card','yourtoken',1)
+            .clean()
+            .getBody();
+        assert.equal(isEmptyObject(body),true);
     });
 
 });
