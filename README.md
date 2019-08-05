@@ -2,6 +2,7 @@
 [![NPM](https://nodei.co/npm/midtrans-payment.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/midtrans-payment/)  
   
 [![npm version](https://img.shields.io/npm/v/midtrans-payment.svg?style=flat-square)](https://www.npmjs.org/package/midtrans-payment)
+[![Build Status](https://travis-ci.org/aalfiann/midtrans-payment.svg?branch=master)](https://travis-ci.org/aalfiann/midtrans-payment)
 ![NPM download/month](https://img.shields.io/npm/dm/midtrans-payment.svg)
 ![NPM download total](https://img.shields.io/npm/dt/midtrans-payment.svg)  
 Midtrans Payment Gateway library for NodeJS
