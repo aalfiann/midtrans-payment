@@ -9,6 +9,7 @@ var config = {
 describe('MidTrans request test', function(){
 
     it('request with wrong authorization should return 401', function(done){
+        this.timeout(10000);
         var mdt = new MidTrans(config);
         mdt.server_key = 'xxx';
         var body = mdt.type('snap').action('transactions').transaction_details('INV001',1000);
@@ -22,6 +23,7 @@ describe('MidTrans request test', function(){
     });
 
     it('action: token with secure true will thrown error with wrong data information', function(done){
+        this.timeout(10000);
         var mdt = new MidTrans(config);
         var payload = {
             card_number:'4811 1111 1111 1114',
