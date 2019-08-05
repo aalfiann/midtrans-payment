@@ -421,6 +421,3 @@ If you want to play arround with testing
 ```
 npm test
 ```
-
-Note:
-- For request test you have to change the config variable
