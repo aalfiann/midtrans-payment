@@ -346,7 +346,7 @@ var mdt = new MidTrans(config);
 ```javascript
 var mdt = new MidTrans(config);
     mdt.type('api')
-        .do('update').action('subscriptions')
+        .action('subscriptions')
         .add('name','SUB1');
         .add('amount','2000');
         .add('currency','IDR');
