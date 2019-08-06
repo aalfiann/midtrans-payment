@@ -7,7 +7,7 @@
 ![NPM download total](https://img.shields.io/npm/dt/midtrans-payment.svg)  
 Midtrans Payment Gateway library for NodeJS
 
-### Install
+## Install using NPM
 ```bash
 $ npm install midtrans-payment
 ```
@@ -347,12 +347,12 @@ var mdt = new MidTrans(config);
 var mdt = new MidTrans(config);
     mdt.type('api')
         .action('subscriptions')
-        .add('name','SUB1');
-        .add('amount','2000');
-        .add('currency','IDR');
-        .add('payment_type','credit_card');
-        .add('token','yourtoken');
-        .add('interval',1);
+        .add('name','SUB1')
+        .add('amount','2000')
+        .add('currency','IDR')
+        .add('payment_type','credit_card')
+        .add('token','yourtoken')
+        .add('interval',1)
         .send(function(response){
             console.log(response.body);
         });
@@ -371,7 +371,7 @@ console.log(mdt.showAllMethods(mdt));
 #### Main methods
 - `type(name)`                                  this is to set SNAP or API  
 - `do(name)`                                    this is to set update|enable|disable for subscriptions only  
-- `action(name,data='',additional_payload='')`  this to set action API feature. Ex: charge|approve|deny|cancel|expiry|point_inquiry|bins|status|status/b2b|refund|refund/online/direct  
+- `action(name,data='',additional_payload='')`  this to set action API feature. Ex: `charge`|`approve`|`deny`|`cancel`|`expiry`|`point_inquiry`|`bins`|`subscriptions`|`status`|`status/b2b`|`refund`|`refund/online/direct`|`card/register`  
 - `add(name,data)`                              this is to add new key for body request object  
 - `send(callback)`                              this is to send request to MidTrans endpoint API  
 
