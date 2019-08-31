@@ -30,13 +30,17 @@ class MidTrans extends Base64 {
     constructor(config) {
         super();
         this.body = {};
-        for(var key in config) {
-            if(config.hasOwnProperty(key)) {
-                this[key] = config[key];
+        if(typeof config === 'object' && config.constructor === Object){
+            for(var key in config) {
+                if(config.hasOwnProperty(key)) {
+                    this[key] = config[key];
+                }
             }
-        }
-        if(!config.mode) {
-            this.mode = "sandbox";
+            if(!config.mode) {
+                this.mode = "sandbox";
+            }
+        } else {
+            throw new Error('Config must be an object type!');
         }
     }
 
@@ -205,8 +209,10 @@ class MidTrans extends Base64 {
                         var order_id = data;
                         order_id.client_key = this.client_key;
                         data = this[_convertObjectToURLParameter](order_id);
+                        this.url = this[_url](this.mode)+'/'+name+'?'+data;
+                    } else {
+                        this.url = this[_url](this.mode)+'/'+name;
                     }
-                    this.url = this[_url](this.mode)+'/'+name+'?'+data;
                     break;
                 case 'point_inquiry':
                     if(typeof additional_payload === 'object'){
@@ -221,8 +227,10 @@ class MidTrans extends Base64 {
                         var order_id = data;
                         order_id.client_key = this.client_key;
                         data = this[_convertObjectToURLParameter](order_id);
+                        this.url = this[_url](this.mode)+'/'+name+'?'+data;
+                    } else {
+                        this.url = this[_url](this.mode)+'/'+name;
                     }
-                    this.url = this[_url](this.mode)+'/'+name+'?'+data;
                     break;
                 case 'status/b2b':
                     if(typeof additional_payload === 'object'){
@@ -379,7 +387,6 @@ class MidTrans extends Base64 {
      */
     billing_address(first_name='',last_name='',email='',phone='',address='',city='',postal_code='',country_code='') {
         if(!this[_isEmpty](this.body.customer_details)) {
-            if(!this[_hasKey](this.body.customer_details,'billing_address')) this.add('billing_address',{});
             var items = {};
             if(first_name) items.first_name=first_name;
             if(last_name) items.last_name=last_name;
@@ -408,7 +415,6 @@ class MidTrans extends Base64 {
      */
     shipping_address(first_name='',last_name='',email='',phone='',address='',city='',postal_code='',country_code='') {
         if(!this[_isEmpty](this.body.customer_details)) {
-            if(!this[_hasKey](this.body.customer_details,'shipping_address')) this.add('shipping_address',{});
             var items = {};
             if(first_name) items.first_name=first_name;
             if(last_name) items.last_name=last_name;
@@ -437,6 +443,7 @@ class MidTrans extends Base64 {
      * @return {callback}
      */
     send(callback){
+        if(this[_isEmptyConfig]('url')) throw new Error('Action method is required!');
         if(this.url.endsWith(this.client_key) 
             || (this.url.includes('/status') > 0)
             || (this.url.includes('/point_inquiry/') > 0)

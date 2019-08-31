@@ -1,3 +1,4 @@
+var assert = require('assert');
 var MidTrans = require('../src/midtrans.js');
 
 var config = {
@@ -41,6 +42,52 @@ describe('MidTrans request test', function(){
                 done(new Error(JSON.stringify(response.body)));
             }
         });
+    });
+
+    it('request with header: get', function(done){
+        this.timeout(10000);
+        var mdt = new MidTrans(config);
+        var body = mdt.action('status');
+        body.send(function(response) {
+            if(response.req.connection._httpMessage.method == 'GET'){
+                done();
+            } else {
+                done(new Error(JSON.stringify({url:mdt.url,method:response.req.connection._httpMessage.method})));
+            }
+        });
+    });
+    
+    it('request with header: post', function(done){
+        this.timeout(10000);
+        var mdt = new MidTrans(config);
+        var body = mdt.do('enable').type('api').action('subscriptions','sub1');
+        body.send(function(response) {
+            if(response.req.connection._httpMessage.method == 'POST'){
+                done();
+            } else {
+                done(new Error(JSON.stringify({url:mdt.url,method:response.req.connection._httpMessage.method})));
+            }
+        });
+    });
+    
+    it('request with header: patch', function(done){
+        this.timeout(10000);
+        var mdt = new MidTrans(config);
+        var body = mdt.do('update').type('api').action('subscriptions','sub1');
+        body.send(function(response) {
+            if(response.req.connection._httpMessage.method == 'PATCH'){
+                done();
+            } else {
+                done(new Error(JSON.stringify({url:mdt.url,method:response.req.connection._httpMessage.method})));
+            }
+        });
+    });
+
+    it('request without action method will not make http request', function(){
+        this.timeout(10000);
+        var mdt = new MidTrans(config);
+        mdt.server_key = 'xxx';
+        assert.throws(function(){mdt.type('api').send(function(response) {})}, Error, "Error thrown");
     });
 
 });

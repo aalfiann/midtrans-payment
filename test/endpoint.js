@@ -41,6 +41,32 @@ describe('MidTrans endpoint url test', function(){
         assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/123/status/b2b?page=0&per_page=10');
     });
 
+    it('endpoint url status/b2b without pagination', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('status/b2b','123');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/123/status/b2b');
+    });
+
+    it('endpoint url token',function(){
+        var mdt = new MidTrans(config);
+        var payload = {
+            gross_amount:10000,
+            card_number:'4811 1111 1111 1114',
+            card_exp_month:12,
+            card_exp_year:2019,
+            card_cvv:123
+        };
+ 
+        mdt.type('api').action('token',payload);
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/token?gross_amount=10000&card_number=4811%201111%201111%201114&card_exp_month=12&card_exp_year=2019&card_cvv=123&client_key=xxx');
+    });
+
+    it('endpoint url token without payload', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('token');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/token');
+    });
+
     it('endpoint url card/register', function(){
         var mdt = new MidTrans(config);
         var payload = {
@@ -51,6 +77,12 @@ describe('MidTrans endpoint url test', function(){
         }
         mdt.action('card/register',payload);
         assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/card/register?card_number=4811222233331114&card_exp_month=12&card_exp_year=2019&card_cvv=123&client_key=xxx');
+    });
+
+    it('endpoint url card/register without payload', function(){
+        var mdt = new MidTrans(config);
+        mdt.action('card/register');
+        assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v2/card/register');
     });
 
     it('endpoint url capture', function(){
@@ -141,6 +173,12 @@ describe('MidTrans endpoint url test', function(){
         var mdt = new MidTrans(config);
         mdt.do('update').action('subscriptions','SUB1');
         assert.equal(mdt.url,'https://api.sandbox.midtrans.com/v1/subscriptions/SUB1');
+    });
+
+    it('endpoint without or wrong action method will return undefined', function(){
+        var mdt = new MidTrans(config);
+        mdt.action([],'SUB1');
+        assert.deepEqual(mdt.url,undefined);
     });
 
 });
