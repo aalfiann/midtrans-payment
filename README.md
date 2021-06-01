@@ -2,7 +2,7 @@
 [![NPM](https://nodei.co/npm/midtrans-payment.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/midtrans-payment/)  
   
 [![npm version](https://img.shields.io/npm/v/midtrans-payment.svg?style=flat-square)](https://www.npmjs.org/package/midtrans-payment)
-[![Build Status](https://travis-ci.org/aalfiann/midtrans-payment.svg?branch=master)](https://travis-ci.org/aalfiann/midtrans-payment)
+[![Build Status](https://travis-ci.com/aalfiann/midtrans-payment.svg?branch=master)](https://travis-ci.com/aalfiann/midtrans-payment)
 [![Coverage Status](https://coveralls.io/repos/github/aalfiann/midtrans-payment/badge.svg?branch=master)](https://coveralls.io/github/aalfiann/midtrans-payment?branch=master)
 [![Known Vulnerabilities](https://snyk.io//test/github/aalfiann/midtrans-payment/badge.svg?targetFile=package.json)](https://snyk.io//test/github/aalfiann/midtrans-payment?targetFile=package.json)
 ![NPM download/month](https://img.shields.io/npm/dm/midtrans-payment.svg)
