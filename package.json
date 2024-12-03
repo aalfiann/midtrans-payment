@@ -1,11 +1,11 @@
 {
   "name": "midtrans-payment",
-  "version": "1.2.7",
+  "version": "1.3.0",
   "description": "Midtrans Payment Gateway library for NodeJS",
   "main": "src/midtrans.js",
+  "types": "src/midtrans.d.ts",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text mocha",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "test": "nyc --reporter=html --reporter=text mocha"
   },
   "repository": {
     "type": "git",
@@ -26,9 +26,7 @@
     "unirest": "^0.6.0"
   },
   "devDependencies": {
-    "coveralls": "^3.0.6",
-    "mocha": "^6.2.0",
-    "mocha-lcov-reporter": "^1.3.0",
-    "nyc": "^14.1.1"
+    "mocha": "^11.0.1",
+    "nyc": "^17.1.0"
   }
 }

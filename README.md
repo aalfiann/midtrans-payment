@@ -2,8 +2,7 @@
 [![NPM](https://nodei.co/npm/midtrans-payment.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/midtrans-payment/)  
   
 [![npm version](https://img.shields.io/npm/v/midtrans-payment.svg?style=flat-square)](https://www.npmjs.org/package/midtrans-payment)
-[![Build Status](https://travis-ci.com/aalfiann/midtrans-payment.svg?branch=master)](https://travis-ci.com/aalfiann/midtrans-payment)
-[![Coverage Status](https://coveralls.io/repos/github/aalfiann/midtrans-payment/badge.svg?branch=master)](https://coveralls.io/github/aalfiann/midtrans-payment?branch=master)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/aalfiann/midtrans-payment/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/aalfiann/midtrans-payment/tree/master)
 [![Known Vulnerabilities](https://snyk.io//test/github/aalfiann/midtrans-payment/badge.svg?targetFile=package.json)](https://snyk.io//test/github/aalfiann/midtrans-payment?targetFile=package.json)
 ![NPM download/month](https://img.shields.io/npm/dm/midtrans-payment.svg)
 ![NPM download total](https://img.shields.io/npm/dt/midtrans-payment.svg)  
@@ -25,9 +24,9 @@ Please see:
 var MidTrans = require('midtrans-payment');
 
 var config = {
-    client_key: "YOUR_CLIENT_KEY",
-    server_key: "YOUR_SERVER_KEY",
-    mode: ""    // you can set to sandbox or production. Default is sandbox if empty.
+  client_key: "YOUR_CLIENT_KEY",
+  server_key: "YOUR_SERVER_KEY",
+  mode: ""    // you can set to sandbox or production. Default is sandbox if empty.
 };
 ```
 
@@ -36,15 +35,15 @@ var config = {
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('snap').action('transactions')
-    .transaction_details('INV001',2000)
-    .item_details('Midtrans Bear',1000,1,'Kid Toys')                //optional
-    .item_details('Midtrans Cat',1000,1,'Kid Toys')                 //optional
-    .customer_details('John','Doe','john.doe@gmail.com','+62856')   //optional
-    .billing_address('John','Doe','john.doe@gmail.com','+62856')    //optional
-    .shipping_address('John','Doe','john.doe@gmail.com','+62856')   //optional
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .transaction_details('INV001',2000)
+  .item_details('Midtrans Bear',1000,1,'Kid Toys')                //optional
+  .item_details('Midtrans Cat',1000,1,'Kid Toys')                 //optional
+  .customer_details('John','Doe','john.doe@gmail.com','+62856')   //optional
+  .billing_address('John','Doe','john.doe@gmail.com','+62856')    //optional
+  .shipping_address('John','Doe','john.doe@gmail.com','+62856')   //optional
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 ### API
@@ -52,20 +51,23 @@ mdt.type('snap').action('transactions')
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api').action('charge')
-    .transaction_details('INV002',2000)
-    .item_details('Midtrans Bear',1000,1,'Kid Toys')                //optional
-    .item_details('Midtrans Cat',1000,1,'Kid Toys')                 //optional
-    .customer_details('John','Doe','john.doe@gmail.com','+62856')   //optional
-    .billing_address('John','Doe','john.doe@gmail.com','+62856')    //optional
-    .shipping_address('John','Doe','john.doe@gmail.com','+62856')   //optional
-    .add('payment_type','bank_transfer')
-    .add('bank_transfer',{
-        bank: "permata",
-        va_number: "1234567890"
-    })
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .transaction_details('INV002',2000)
+  .item_details('Midtrans Bear',1000,1,'Kid Toys')                //optional
+  .item_details('Midtrans Cat',1000,1,'Kid Toys')                 //optional
+  .customer_details('John','Doe','john.doe@gmail.com','+62856')   //optional
+  .billing_address('John','Doe','john.doe@gmail.com','+62856')    //optional
+  .shipping_address('John','Doe','john.doe@gmail.com','+62856')   //optional
+  .add('payment_type','bank_transfer')
+  .add('bank_transfer',{
+    bank: "permata",
+    va_number: "1234567890",
+    permata: {
+      recipient_name: "SUDARSONO"
+    }
+  })
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example Get Credit Card Token
@@ -73,137 +75,137 @@ mdt.type('api').action('charge')
 var mdt = new MidTrans(config);
 
 var payload = {
-    gross_amount:10000,
-    card_number:'4811 1111 1111 1114',
-    card_exp_month:12,
-    card_exp_year:2019,
-    card_cvv:123
+  gross_amount: 10000,
+  card_number: '4811 1111 1111 1114',
+  card_exp_month: 12,
+  card_exp_year: 2019,
+  card_cvv: 123
 };
 
 mdt.type('api').action('token',payload)
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to create API Charge Credit Card
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api').action('charge')
-    .transaction_details('INV003',2000)
-    .item_details('Midtrans Bear',1000,1,'Kid Toys')                //optional
-    .item_details('Midtrans Cat',1000,1,'Kid Toys')                 //optional
-    .customer_details('John','Doe','john.doe@gmail.com','+62856')   //optional
-    .billing_address('John','Doe','john.doe@gmail.com','+62856')    //optional
-    .shipping_address('John','Doe','john.doe@gmail.com','+62856')   //optional
-    .add('payment_type','credit_card')
-    .add('credit_card',{
-        token_id: "<you must call API to get credit card token first>"
-    })
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .transaction_details('INV003',2000)
+  .item_details('Midtrans Bear',1000,1,'Kid Toys')                //optional
+  .item_details('Midtrans Cat',1000,1,'Kid Toys')                 //optional
+  .customer_details('John','Doe','john.doe@gmail.com','+62856')   //optional
+  .billing_address('John','Doe','john.doe@gmail.com','+62856')    //optional
+  .shipping_address('John','Doe','john.doe@gmail.com','+62856')   //optional
+  .add('payment_type','credit_card')
+  .add('credit_card',{
+    token_id: "<you must call API to get credit card token first>"
+  })
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to get Transaction Status
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
-    .action('status','INV001')
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .action('status','INV001')
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to get Transaction Status B2B
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
-    .action('status/b2b','INV001')
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .action('status/b2b','INV001')
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to get Transaction Status B2B with pagination
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
-    .action('status/b2b','INV001',{page:0,per_page:10})
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .action('status/b2b','INV001',{page:0,per_page:10})
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to APPROVE Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
-    .action('approve','INV001')
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .action('approve','INV001')
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to DENY Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
-    .action('deny','INV001')
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .action('deny','INV001')
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to CANCEL Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
-    .action('cancel','INV001')
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .action('cancel','INV001')
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to EXPIRE Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
-    .action('expire','INV001')
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .action('expire','INV001')
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to REFUND Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
-    .action('refund','INV001')
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .action('refund','INV001')
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to REFUND DIRECT Transaction
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api')    //you can set type with snap or api
-    .action('refund/online/direct','INV001')
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .action('refund/online/direct','INV001')
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to Capture Transactions
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api').action('capture')
-    .add('transaction_id','be4f3e44-d6ee-4355-8c64-c1d1dc7f4590')
-    .add('gross_amount',145000)
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .add('transaction_id','be4f3e44-d6ee-4355-8c64-c1d1dc7f4590')
+  .add('gross_amount',145000)
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to Card Register
@@ -211,35 +213,35 @@ mdt.type('api').action('capture')
 var mdt = new MidTrans(config);
 
 var payload = {
-    card_number:'4811222233331114',
-    card_exp_month:12,
-    card_exp_year:2019,
-    card_cvv:123
+  card_number: '4811222233331114',
+  card_exp_month: 12,
+  card_exp_year: 2019,
+  card_cvv: 123
 };
 
 mdt.type('api')    //you can set type with snap or api
-    .action('card/register',payload)
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .action('card/register',payload)
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to Point Inquiry
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api').action('point_inquiry','123',{gross_amount:1000})
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example to BIN API
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api').action('bins','455633')
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 #### Example create body request manually
@@ -248,116 +250,116 @@ If our methods doesn't fit in your situation. You're able to build your custom b
 ```javascript
 var mdt = new MidTrans(config);
 mdt.type('api').action('charge')
-    .add('payment_type','bank_transfer')
-    .add('transaction_details',{
-        gross_amount: 44000,
-        order_id: "order-101c"
-    })
-    .add('customer_details',{
-        email: "noreply@example.com",
-        first_name: "budi",
-        last_name: "utomo",
-        phone: "+6281 1234 1234"
-    })
-    .add('item_details',[{
-            id: "item01",
-            price: 21000,
-            quantity: 1,
-            name: "Ayam Zozozo"
-        },
-        {
-            id: "item02",
-            price: 23000,    
-            quantity: 1,
-            name: "Ayam Xoxoxo"
-        }
-    ])
-    .add('bank_transfer',{
-        bank: "bca",
-        va_number: "12345678901",
-        free_text: {
-            inquiry: [{
-                id: "Your Custom Text in ID language",
-                en: "Your Custom Text in EN language"
-            }],
-            payment: [{
-                id: "Your Custom Text in ID language",
-                en: "Your Custom Text in EN language"
-            }]
-        }
-    })
-    .send(function(response) {
-        console.log(response.body);
-    });
+  .add('payment_type','bank_transfer')
+  .add('transaction_details',{
+    gross_amount: 44000,
+    order_id: "order-101c"
+  })
+  .add('customer_details',{
+    email: "noreply@example.com",
+    first_name: "budi",
+    last_name: "utomo",
+    phone: "+6281 1234 1234"
+  })
+  .add('item_details',[{
+      id: "item01",
+      price: 21000,
+      quantity: 1,
+      name: "Ayam Zozozo"
+    },
+    {
+      id: "item02",
+      price: 23000,    
+      quantity: 1,
+      name: "Ayam Xoxoxo"
+    }
+  ])
+  .add('bank_transfer',{
+    bank: "bca",
+    va_number: "12345678901",
+    free_text: {
+      inquiry: [{
+        id: "Your Custom Text in ID language",
+        en: "Your Custom Text in EN language"
+      }],
+      payment: [{
+        id: "Your Custom Text in ID language",
+        en: "Your Custom Text in EN language"
+      }]
+    }
+  })
+  .send(function(response) {
+    console.log(response.body);
+  });
 ```
 
 ### RECURRING API
 #### Example to Create Subscriptions
 ```javascript
 var mdt = new MidTrans(config);
-    mdt.type('api')
-        .action('subscriptions')
-        .subscriptions('SUB1',1000,'IDR','credit_card','yourtoken',1)
-        .send(function(response){
-            console.log(response.body);
-        });
+mdt.type('api')
+  .action('subscriptions')
+  .subscriptions('SUB1',1000,'IDR','credit_card','yourtoken',1)
+  .send(function(response){
+    console.log(response.body);
+  });
 ```
 
 #### Example to Find Subscriptions
 ```javascript
 var mdt = new MidTrans(config);
-    mdt.type('api')
-        .action('subscriptions','SUB1')
-        .send(function(response){
-            console.log(response.body);
-        });
+mdt.type('api')
+  .action('subscriptions','SUB1')
+  .send(function(response){
+    console.log(response.body);
+  });
 ```
 
 #### Example to Enable Subscriptions
 ```javascript
 var mdt = new MidTrans(config);
-    mdt.type('api')
-        .do('enable').action('subscriptions','SUB1')
-        .send(function(response){
-            console.log(response.body);
-        });
+mdt.type('api')
+  .do('enable').action('subscriptions','SUB1')
+  .send(function(response){
+    console.log(response.body);
+  });
 ```
 
 #### Example to Disable Subscriptions
 ```javascript
 var mdt = new MidTrans(config);
-    mdt.type('api')
-        .do('disable').action('subscriptions','SUB1')
-        .send(function(response){
-            console.log(response.body);
-        });
+mdt.type('api')
+  .do('disable').action('subscriptions','SUB1')
+  .send(function(response){
+    console.log(response.body);
+  });
 ```
 
 #### Example to Update Subscriptions
 ```javascript
 var mdt = new MidTrans(config);
-    mdt.type('api')
-        .do('update').action('subscriptions','SUB1')
-        .subscriptions('SUB1',2000,'IDR','credit_card','yourtoken',1)
-        .send(function(response){
-            console.log(response.body);
-        });
+mdt.type('api')
+  .do('update').action('subscriptions','SUB1')
+  .subscriptions('SUB1',2000,'IDR','credit_card','yourtoken',1)
+  .send(function(response){
+    console.log(response.body);
+  });
 ```
 
 #### Example create body request for subscriptions manually
 ```javascript
 var mdt = new MidTrans(config);
-    mdt.type('api')
-        .action('subscriptions')
-        .add('name','SUB1')
-        .add('amount','2000')
-        .add('currency','IDR')
-        .add('payment_type','credit_card')
-        .add('token','yourtoken')
-        .add('interval',1)
-        .send(function(response){
-            console.log(response.body);
-        });
+mdt.type('api')
+  .action('subscriptions')
+  .add('name','SUB1')
+  .add('amount','2000')
+  .add('currency','IDR')
+  .add('payment_type','credit_card')
+  .add('token','yourtoken')
+  .add('interval',1)
+  .send(function(response){
+    console.log(response.body);
+  });
 ```
 
 ### Response
@@ -405,16 +407,16 @@ But you can still use additional feature with this way:
 
 // if you want to add expiry in snap transactions
 .add('expiry',{
-    start_time: "2018-12-13 18:11:08 +0700",
-    unit: "minutes",
-    duration: 1
+  start_time: "2018-12-13 18:11:08 +0700",
+  unit: "minutes",
+  duration: 1
 })
 
 // if you want to add custom_expiry in API charge
 .add('custom_expiry',{
-    order_time: "2017-04-13 18:11:08 +0700",
-    expiry_duration: 180,
-    unit: "minute"
+  order_time: "2017-04-13 18:11:08 +0700",
+  expiry_duration: 180,
+  unit: "minute"
 })
 ```
 
