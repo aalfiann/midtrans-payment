@@ -1,5 +1,5 @@
 # midtrans-payment  
-![Types](https://img.shields.io/npm/types/{package-name})  
+![Types](https://img.shields.io/npm/types/midtrans-payment)  
 [![npm version](https://img.shields.io/npm/v/midtrans-payment.svg?style=flat-square)](https://www.npmjs.org/package/midtrans-payment)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/aalfiann/midtrans-payment/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/aalfiann/midtrans-payment/tree/master)
 [![Known Vulnerabilities](https://snyk.io//test/github/aalfiann/midtrans-payment/badge.svg?targetFile=package.json)](https://snyk.io//test/github/aalfiann/midtrans-payment?targetFile=package.json)
