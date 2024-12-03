@@ -8,7 +8,7 @@
 Midtrans Payment Gateway library for NodeJS
 
 ## Features
-- Async/Await or Promise Support
+- Async/Await and Promise Support
 - Typescript Support
 - Built-in method
 - Easy to Customize
