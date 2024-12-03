@@ -1,6 +1,6 @@
 {
   "name": "midtrans-payment",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Midtrans Payment Gateway library for NodeJS",
   "main": "src/midtrans.js",
   "types": "src/midtrans.d.ts",
@@ -13,7 +13,9 @@
   },
   "keywords": [
     "midtrans",
+    "midtrans-wrapper",
     "payment",
+    "payment-midtrans",
     "payment-gateway"
   ],
   "author": "M ABD AZIZ ALFIAN",

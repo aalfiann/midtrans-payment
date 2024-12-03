@@ -1,12 +1,17 @@
-# midtrans-payment
-[![NPM](https://nodei.co/npm/midtrans-payment.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/midtrans-payment/)  
-  
+# midtrans-payment  
+![Types](https://img.shields.io/npm/types/{package-name})  
 [![npm version](https://img.shields.io/npm/v/midtrans-payment.svg?style=flat-square)](https://www.npmjs.org/package/midtrans-payment)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/aalfiann/midtrans-payment/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/aalfiann/midtrans-payment/tree/master)
 [![Known Vulnerabilities](https://snyk.io//test/github/aalfiann/midtrans-payment/badge.svg?targetFile=package.json)](https://snyk.io//test/github/aalfiann/midtrans-payment?targetFile=package.json)
 ![NPM download/month](https://img.shields.io/npm/dm/midtrans-payment.svg)
 ![NPM download total](https://img.shields.io/npm/dt/midtrans-payment.svg)  
 Midtrans Payment Gateway library for NodeJS
+
+## Features
+- Async/Await or Promise Support
+- Typescript Support
+- Built-in method
+- Easy to Customize
 
 ## Install using NPM
 ```bash
@@ -69,6 +74,26 @@ mdt.type('api').action('charge')
     console.log(response.body);
   });
 ```
+
+Promise
+```javascript
+mdt.sendAsync().then(res => {
+  console.log(res.body);
+}).catch(err => {
+  console.log(err);
+});
+```
+
+Async Await
+```javascript
+const res = await mdt.sendAsync();
+if(res) {
+  console.log(res.body);
+} else {
+  console.log(res);
+}
+```
+
 
 #### Example Get Credit Card Token
 ```javascript
@@ -377,7 +402,8 @@ console.log(mdt.showAllMethods(mdt));
 - `do(name)`                                    this is to set update|enable|disable for subscriptions only  
 - `action(name,data='',additional_payload='')`  this to set action API feature. Ex: `charge`|`approve`|`deny`|`cancel`|`expiry`|`point_inquiry`|`bins`|`subscriptions`|`status`|`status/b2b`|`refund`|`refund/online/direct`|`card/register`  
 - `add(name,data)`                              this is to add new key for body request object  
-- `send(callback)`                              this is to send request to MidTrans endpoint API  
+- `send(callback)`                              this is to send request to MidTrans endpoint API (Callback based)  
+- `sendAsync()`                                 this is to send request to MidTrans endpoint API (Promise based)  
 
 #### Shortcut methods
 We provide a shortcut methods for you to make easier create common body request

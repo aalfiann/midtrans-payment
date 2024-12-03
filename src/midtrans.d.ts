@@ -83,5 +83,7 @@ declare module 'midtrans' {
     getBody(): Record<string, any>;
 
     send(callback: (response: any) => void): void;
+
+    sendAsync(): Promise<{[key: string]: any;}>;
   }
 }
